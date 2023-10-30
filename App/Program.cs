@@ -3,6 +3,9 @@ using Data;
 using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Services;
+using FluentValidation;
+using System;
+using Domain.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IValidator<RegistrationDto>, RegistrationValidator>();
 
 var app = builder.Build();
 
