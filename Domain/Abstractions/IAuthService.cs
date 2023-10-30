@@ -1,9 +1,10 @@
 ﻿using Domain.Dtos;
+using Domain.Models;
 
 namespace Domain.Abstractions
 {
     public interface IAuthService
     {
-        public Task Register(RegistrationDto userRegistration);
+        public Task<BaseServiceResponse?> Register(RegistrationDto userRegistration);
     }
 }

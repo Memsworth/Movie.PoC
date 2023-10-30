@@ -30,7 +30,13 @@ namespace App.Pages
                 return Page();
             }
 
-            await _authService.Register(Registration);
+            var serviceResponse = await _authService.Register(Registration);
+            
+            if (serviceResponse is not null)
+            {
+                ModelState.AddModelError("Registration.Email", serviceResponse.Message);
+                return Page();
+            }
             return RedirectToPage("./Index");
 
         }

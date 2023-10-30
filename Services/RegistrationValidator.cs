@@ -6,13 +6,13 @@ namespace Services
 {
     public class RegistrationValidator : AbstractValidator<RegistrationDto> 
     {
-        public RegistrationValidator(IUnitOfWork unitOfWork)
+        public RegistrationValidator()
         {
             RuleFor(dto => dto.Email)
             .NotEmpty()
             .WithMessage("Email is required")
             .EmailAddress()
-            .WithMessage("Invalid Email Address")
+            .WithMessage("Invalid Email Address");
 
             RuleFor(dto => dto.Password)
             .NotEmpty()
