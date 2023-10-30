@@ -6,11 +6,13 @@ using Services;
 using FluentValidation;
 using System;
 using Domain.Dtos;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddDbContext<MovieDbContext>(options => options.UseSqlite($"Data Source=Movie.db"));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

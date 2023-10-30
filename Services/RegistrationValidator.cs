@@ -8,17 +8,11 @@ namespace Services
     {
         public RegistrationValidator(IUnitOfWork unitOfWork)
         {
-            RuleFor(dto => dto.Email.ToLower())
+            RuleFor(dto => dto.Email)
             .NotEmpty()
             .WithMessage("Email is required")
             .EmailAddress()
             .WithMessage("Invalid Email Address")
-            .MustAsync(async (email, cancellation) =>
-            {
-                // Check if the email exists in the database
-                return !await unitOfWork.UserRepository.EmailExists(email);
-            })
-            .WithMessage("Email already exists");
 
             RuleFor(dto => dto.Password)
             .NotEmpty()
