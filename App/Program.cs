@@ -4,9 +4,13 @@ using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Services;
 using FluentValidation;
-using System;
 using Domain.Dtos;
 using FluentValidation.AspNetCore;
+using Domain.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Services.ModelValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddDbContext<MovieDbContext>(options => options.UseSqlite($"Data Source=Movie.db"));
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(jwt =>
+    {
+        var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value!);
+
+        jwt.SaveToken = true;
+        jwt.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false, //Make it true later
+            ValidateAudience = false, //Make it true later
+            RequireExpirationTime = false,
+            ValidateLifetime = true,
+        };
+    });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -37,6 +63,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

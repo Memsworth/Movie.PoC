@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Dtos;
 using Domain.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Services
 {
@@ -13,9 +14,9 @@ namespace Services
         {
             //fix this later
             if (userRegistration is null) throw new Exception("registration is null");
-            var email = (await _unitOfWork.UserRepository.GetAsync()).FirstOrDefault(x => x.Email == userRegistration.Email.ToLower());
+            var email = await ValidationService.EmailExists(userRegistration.Email, _unitOfWork);
 
-            if (email is not null)
+            if (email)
             {
                 return new BaseServiceResponse()
                 {
@@ -35,6 +36,18 @@ namespace Services
             });
 
             await _unitOfWork.CommitAsync();
+            return null;
+        }
+
+        public async Task<BaseServiceResponse?> Login(LoginDto loginDto)
+        {
+            var email = await ValidationService.EmailExists(loginDto.Email, _unitOfWork);
+
+            if (email is false)
+                return new BaseServiceResponse
+                {
+                    Message = "There is not account associated with this email"
+                };
 
             return null;
         }
