@@ -2,9 +2,9 @@
 using Domain.Dtos;
 using FluentValidation;
 
-namespace Services
+namespace Services.ModelValidation
 {
-    public class RegistrationValidator : AbstractValidator<RegistrationDto> 
+    public class RegistrationValidator : AbstractValidator<RegistrationDto>
     {
         public RegistrationValidator()
         {

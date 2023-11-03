@@ -1,11 +1,11 @@
 ﻿using Domain.Dtos;
 using FluentValidation;
 
-namespace Services
+namespace Services.ModelValidation
 {
     public class LoginValidator : AbstractValidator<LoginDto>
     {
-        public LoginValidator() 
+        public LoginValidator()
         {
             RuleFor(dto => dto.Email)
             .NotEmpty()
