@@ -4,7 +4,7 @@ namespace Domain.Abstractions
 {
     public interface ITokenGenerator
     {
-        string GenerateToken(RegistrationDto registrationDto);
+        string GenerateToken(UserInfoDto userData);
         bool ValidateToken(string token);
     }
 }

@@ -18,7 +18,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddDbContext<MovieDbContext>(options => options.UseSqlite($"Data Source=Movie.db"));
+
+//review this to pass the GetSection to Services
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -28,16 +31,19 @@ builder.Services.AddAuthentication(options =>
     .AddJwtBearer(jwt =>
     {
         var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value!);
+        var Issuer = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Issuer").Value!);
+        var Audience = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Audience").Value!);
 
         jwt.SaveToken = true;
         jwt.TokenValidationParameters = new TokenValidationParameters()
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false, //Make it true later
-            ValidateAudience = false, //Make it true later
-            RequireExpirationTime = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = Issuer.ToString(),
+            ValidAudience = Audience.ToString(),
+            IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
 
