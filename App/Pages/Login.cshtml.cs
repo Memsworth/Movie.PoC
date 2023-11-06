@@ -12,7 +12,7 @@ namespace App.Pages
         private readonly IAuthService _authService;
         private readonly IValidator<LoginDto> _validator;
 
-
+        public LoginDto Login { get; set; }
         public LoginModel(IAuthService authService, IValidator<LoginDto> validator, JwtConfig jwtConfig)
         {
             _authService = authService;

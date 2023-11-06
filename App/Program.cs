@@ -38,11 +38,15 @@ builder.Services.AddAuthentication(options =>
         jwt.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
+            ValidIssuer = Issuer.ToString(),
+
             ValidateAudience = true,
+            ValidAudience = Audience.ToString(),
+
+            RequireExpirationTime = true,
+            
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = Issuer.ToString(),
-            ValidAudience = Audience.ToString(),
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
