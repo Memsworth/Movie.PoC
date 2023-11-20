@@ -24,7 +24,6 @@ namespace Services.ModelValidation
             .Matches("^[a-zA-Z ]+$")
             .WithMessage("Name should only contain letters and spaces");
 
-
             RuleFor(dto => dto.DateOfBirth)
             .NotEmpty()
             .WithMessage("Date of Birth is required");
