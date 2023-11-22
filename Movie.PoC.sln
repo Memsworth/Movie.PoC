@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{B9356603-B05D-4AB8-AE37-F8B30E2B0301}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movie.PoC.WebApp", "Movie.PoC.WebApp\Movie.PoC.WebApp.csproj", "{84F538EF-DF23-4E1D-B9B7-B08218490DB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B9356603-B05D-4AB8-AE37-F8B30E2B0301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9356603-B05D-4AB8-AE37-F8B30E2B0301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9356603-B05D-4AB8-AE37-F8B30E2B0301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F538EF-DF23-4E1D-B9B7-B08218490DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F538EF-DF23-4E1D-B9B7-B08218490DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F538EF-DF23-4E1D-B9B7-B08218490DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F538EF-DF23-4E1D-B9B7-B08218490DB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
