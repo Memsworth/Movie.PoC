@@ -6,6 +6,7 @@ using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
 using Movie.PoC.Api.Features.Films;
 using Movie.PoC.Api.Features.Users;
+using Movie.PoC.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var dbPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "movie.db");
+builder.Services.Configure<OmDbSettings>(builder.Configuration.GetSection(nameof(OmDbSettings)));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, FilmDataRaw?>, FilmService.GetFilmDataHandler>(
     w => w.BaseAddress = new Uri("https://www.omdbapi.com/"));

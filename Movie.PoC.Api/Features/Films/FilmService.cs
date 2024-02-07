@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Movie.PoC.Api.Entities;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
+using Movie.PoC.Api.Settings;
 
 namespace Movie.PoC.Api.Features.Films
 {
@@ -8,11 +10,11 @@ namespace Movie.PoC.Api.Features.Films
     {
         public record GetFilmDataQuery(string ImdbId) : IRequest<FilmDataRaw?>;
 
-        internal sealed class GetFilmDataHandler(HttpClient client) : IRequestHandler<GetFilmDataQuery, FilmDataRaw?>
+        internal sealed class GetFilmDataHandler(HttpClient client,IOptions<OmDbSettings> settings) : IRequestHandler<GetFilmDataQuery, FilmDataRaw?>
         {
             public async Task<FilmDataRaw?> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
             {
-                string url = $"?i={request.ImdbId}&apikey=66b0c81f".ToString();
+                string url = $"?i={request.ImdbId}&apikey={settings.Value.ApiKey}".ToString();
 
                 var response = await client.GetAsync(url, cancellationToken);
                 if (!response.IsSuccessStatusCode)
