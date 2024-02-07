@@ -8,21 +8,13 @@ namespace Movie.PoC.Api.Features.Films
     {
         public record GetFilmDataQuery(string ImdbId) : IRequest<FilmDataRaw?>;
 
-        internal sealed class GetFilmDataHandler : IRequestHandler<GetFilmDataQuery, FilmDataRaw?>
+        internal sealed class GetFilmDataHandler(HttpClient client) : IRequestHandler<GetFilmDataQuery, FilmDataRaw?>
         {
-            private readonly HttpClient _httpClient;
-
-            public GetFilmDataHandler() => _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://www.omdbapi.com/")
-            };
-
-
             public async Task<FilmDataRaw?> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
             {
                 string url = $"?i={request.ImdbId}&apikey=66b0c81f".ToString();
 
-                var response = await _httpClient.GetAsync(url, cancellationToken);
+                var response = await client.GetAsync(url, cancellationToken);
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;

@@ -21,7 +21,7 @@ namespace Movie.PoC.Api.Controllers
         {
             var query = new FilmService.GetFilmDataQuery(request);
             var result = await _mediator.Send(query);
-            return result is not null ? Ok(request) : BadRequest();
+            return result is not null ? Ok(result) : BadRequest();
         }
     }
 }
