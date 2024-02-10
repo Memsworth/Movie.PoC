@@ -16,13 +16,11 @@ namespace Movie.PoC.Api.Database
         public DbSet<UserModel> Users { get; set; }
         public DbSet<FilmModel> Films { get; set; }
         public DbSet<FilmDataModel> FilmDatas { get; set; }
-        public DbSet<ReviewModel> Reviews { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserModelConfiguration());
             modelBuilder.ApplyConfiguration(new FilmModelConfiguration());
             modelBuilder.ApplyConfiguration(new FilmDataModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ReviewModelConfiguration());
         }
     }
 }

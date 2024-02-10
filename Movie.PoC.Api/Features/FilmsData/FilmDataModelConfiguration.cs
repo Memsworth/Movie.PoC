@@ -9,9 +9,6 @@ namespace Movie.PoC.Api.Features.FilmsData
         public void Configure(EntityTypeBuilder<FilmDataModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.AssociatedFilm)
-                .WithOne(y => y.AssociatedFilmData)
-                .HasForeignKey<FilmDataModel>(x => x.FilmId);
         }
     }
 }

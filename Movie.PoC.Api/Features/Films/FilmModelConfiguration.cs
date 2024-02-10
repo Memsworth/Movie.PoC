@@ -10,6 +10,9 @@ namespace Movie.PoC.Api.Features.Films
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.IsDisabled).IsRequired();
+            builder.HasOne(x => x.AssociatedFilmData)
+                .WithOne(f => f.AssociatedFilm)
+                .HasForeignKey<FilmModel>(x => x.FilmDataId);
         }
     }
 }
