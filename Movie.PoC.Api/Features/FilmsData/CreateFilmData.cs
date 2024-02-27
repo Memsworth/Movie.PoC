@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
 using System.Globalization;
@@ -34,20 +33,21 @@ namespace Movie.PoC.Api.Features.FilmsData
             return new FilmDataModel
             {
                 Title = filmData.Title,
-                Rated = filmData.Rated,
+                Rated = Helper.ParseEnum<ContentRating>(filmData.Rated),
                 Released = DateOnly.FromDateTime(DateTime.Parse(filmData.Released)),
-                Genre = filmData.Genre,
+                Genre = Helper.ParseEnum<MediaGenre>(filmData.Genre.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()),
                 Director = filmData.Director,
                 Writer = filmData.Writer,
                 Actors = filmData.Actors,
                 Plot = filmData.Plot,
-                Language = filmData.Language,
-                Country = filmData.Country,
+                Language = Helper.ParseEnum<MediaLanguage>(filmData.Language),
+                Country = Helper.ParseEnum<MediaCountry>(filmData.Country),
                 Poster = filmData.Poster,
-                Metascore = int.Parse(filmData.Metascore, NumberStyles.AllowThousands),
+                Metascore = int.Parse(filmData.Metascore),
                 imdbRating = double.Parse(filmData.imdbRating),
+                imdbID = filmData.imdbID,
                 imdbVotes = int.Parse(filmData.imdbVotes, NumberStyles.AllowThousands),
-                Type = filmData.Type,
+                Type = Helper.ParseEnum<MediaType>(filmData.Type),
                 Production = filmData.Production == "N/A" ? null : filmData.Production,
                 Website = filmData.Website == "N/A" ? null : filmData.Website,
             };

@@ -25,7 +25,6 @@ builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, Fil
 
 builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

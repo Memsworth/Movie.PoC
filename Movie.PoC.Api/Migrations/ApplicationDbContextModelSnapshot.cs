@@ -24,60 +24,68 @@ namespace Movie.PoC.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Actors")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Country")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Country")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Genre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Language")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Metascore")
+                    b.Property<int>("Metascore")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Plot")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Production")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Rated")
+                    b.Property<int>("Rated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("Released")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("Released")
-                        .HasColumnType("TEXT");
-
-                    b.Property<TimeSpan?>("Runtime")
+                    b.Property<TimeSpan>("Runtime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Website")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Writer")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("imdbID")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("imdbRating")
+                    b.Property<double>("imdbRating")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("imdbVotes")
+                    b.Property<int>("imdbVotes")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

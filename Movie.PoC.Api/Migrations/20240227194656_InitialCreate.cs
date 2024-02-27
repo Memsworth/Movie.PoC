@@ -17,8 +17,7 @@ namespace Movie.PoC.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Year = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    Rated = table.Column<string>(type: "TEXT", nullable: false),
+                    Rated = table.Column<int>(type: "INTEGER", nullable: false),
                     Released = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     Runtime = table.Column<TimeSpan>(type: "TEXT", nullable: false),
                     Genre = table.Column<string>(type: "TEXT", nullable: false),
@@ -26,16 +25,16 @@ namespace Movie.PoC.Api.Migrations
                     Writer = table.Column<string>(type: "TEXT", nullable: false),
                     Actors = table.Column<string>(type: "TEXT", nullable: false),
                     Plot = table.Column<string>(type: "TEXT", nullable: false),
-                    Language = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false),
+                    Language = table.Column<int>(type: "INTEGER", nullable: false),
+                    Country = table.Column<int>(type: "INTEGER", nullable: false),
                     Poster = table.Column<string>(type: "TEXT", nullable: false),
                     Metascore = table.Column<int>(type: "INTEGER", nullable: false),
                     imdbRating = table.Column<double>(type: "REAL", nullable: false),
                     imdbVotes = table.Column<int>(type: "INTEGER", nullable: false),
                     imdbID = table.Column<string>(type: "TEXT", nullable: false),
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    Production = table.Column<string>(type: "TEXT", nullable: false),
-                    Website = table.Column<string>(type: "TEXT", nullable: false)
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    Production = table.Column<string>(type: "TEXT", nullable: true),
+                    Website = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
