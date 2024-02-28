@@ -27,6 +27,7 @@
 
     public enum MediaType
     {
+        Other,
         Movie,
         Series,
         Episode,
@@ -39,10 +40,10 @@
         TVMiniSeries,
         TVSpecial,
         Video,
-        Other
     }
     public enum MediaCountry
     {
+        Other,
         USA,
         UK,
         Canada,
@@ -53,10 +54,10 @@
         SouthKorea,
         India,
         China,
-        Other
     }
     public enum MediaLanguage
     {
+        Other,
         English,
         Spanish,
         French,
@@ -73,7 +74,6 @@
         Swedish,
         Turkish,
         Polish,
-        Other
     }
     public enum ContentRating
     {
@@ -94,6 +94,7 @@
     }
     public enum MediaGenre
     {
+        Other,
         Action,
         Adventure,
         Animation,
@@ -116,6 +117,5 @@
         Thriller,
         War,
         Western,
-        Other
     }
 }

@@ -14,6 +14,7 @@ namespace Movie.PoC.Api.Controllers
             _mediator = mediator;
         }
 
-        
+        [HttpPost]
+        public
     }
 }
