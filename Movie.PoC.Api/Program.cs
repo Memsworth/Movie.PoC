@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Movie.PoC.Api;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
@@ -22,6 +23,7 @@ builder.Services.Configure<OmDbSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, FilmDataRaw?>, FilmService.GetFilmDataHandler>(
     w => w.BaseAddress = new Uri("https://www.omdbapi.com/"));
+
 
 builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());

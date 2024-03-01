@@ -7,13 +7,12 @@ namespace Movie.PoC.Api.Features
     {
         public static T ParseEnum<T>(string value) where T : struct, Enum
         {
-            if (Enum.TryParse<T>(value, true, out T result))
+            if (Enum.TryParse(value, true, out T result))
             {
                 return result;
             }
             else
             {
-                // Handle unrecognized enum values here
                 return default; // Default value for TEnum
             }
         }
@@ -23,11 +22,10 @@ namespace Movie.PoC.Api.Features
             var items = new List<T>();
             foreach (var item in value)
             {
-                if(Enum.TryParse<T>(item, true, out T result))
+                if(Enum.TryParse(item, true, out T result))
                 {
                     items.Add(result);
                 }
-                else { items.Add(default); }
             }
 
             return items;

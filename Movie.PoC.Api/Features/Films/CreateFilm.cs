@@ -1,23 +1,47 @@
 ﻿using FluentValidation;
 using MediatR;
+using Movie.PoC.Api.Contracts.Requests;
+using Movie.PoC.Api.Database;
+using Movie.PoC.Api.Entities;
 
 namespace Movie.PoC.Api.Features.Films
 {
-    public class CreateFilmCommand : IRequest
+    public record CreateFilmCommand(CreateFilmRequest CreateFilmRequest) : IRequest<bool>
     {
     }
 
-    public class CreateFilmCommandHandler : IRequestHandler<CreateFilmCommand>
+    public class CreateFilmCommandHandler : IRequestHandler<CreateFilmCommand, bool>
     {
-        public Task Handle(CreateFilmCommand request, CancellationToken cancellationToken)
+        private readonly ApplicationDbContext _context;
+        public CreateFilmCommandHandler(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<bool> Handle(CreateFilmCommand request, CancellationToken cancellationToken)
+        {
+            if (request is null)
+                return false;
+
+            var data = new FilmModel()
+            {
+                IsDisabled = request.CreateFilmRequest.IsDisabled,
+                FilmDataId = request.CreateFilmRequest.FilmDataId
+            };
+
+            _context.Films.Add(data);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 
 
     public class CreateFilmCommandValidator : AbstractValidator<CreateFilmCommand>
     {
-
+        public CreateFilmCommandValidator()
+        {
+            RuleFor(request => request.CreateFilmRequest.FilmDataId).NotEmpty().WithMessage("FilmId can't be empty.");
+            RuleFor(request => request.CreateFilmRequest.IsDisabled).NotEmpty().WithMessage("Enable or Disable the film");
+        }
     }
 }

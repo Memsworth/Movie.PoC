@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
@@ -29,6 +30,11 @@ namespace Movie.PoC.Api.Features.Users
                 return false;
             }
 
+            if (await IsEmailUnique(request.UserInfo.Email))
+            {
+                return false;
+            } 
+
             var user = new UserModel
             {
                 Name = request.UserInfo.Name,
@@ -42,24 +48,9 @@ namespace Movie.PoC.Api.Features.Users
             await _dbContext.SaveChangesAsync(cancellationToken);
             return true;
         }
+
+        private async Task<bool> IsEmailUnique(string email) => await _dbContext.Users.AnyAsync(x => x.Email == email);
     }
 
-    public class CreateUserValidator : AbstractValidator<CreateUserRequest>
-    {
-        public CreateUserValidator()
-        {
-            RuleFor(request => request.Name).NotEmpty().WithMessage("Name can't be empty.");
-            RuleFor(request => request.BirthDay).NotEmpty()
-                .WithMessage("Birthday can't be empty")
-                .LessThanOrEqualTo(DateTime.UtcNow)
-                .WithMessage("Birthday can't be today's date");
-
-            RuleFor(request => request.Email).NotEmpty().WithMessage("Email can't be empty")
-                .EmailAddress().WithMessage("Enter a valid email address");
-
-            //TODO: ADD IN A MATCHING LATER
-            RuleFor(request => request.Password).NotEmpty().WithMessage("Password can't be empty")
-                .MinimumLength(8).WithMessage("Password needs to be at-least 8 characters");
-        }
-    }
+    
 }

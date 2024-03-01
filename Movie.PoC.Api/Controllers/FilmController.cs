@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Movie.PoC.Api.Contracts.Requests;
+using Movie.PoC.Api.Features.Films;
 
 namespace Movie.PoC.Api.Controllers
 {
@@ -15,6 +17,11 @@ namespace Movie.PoC.Api.Controllers
         }
 
         [HttpPost]
-        public
+        public async Task<IActionResult> CreateFilm(CreateFilmRequest request)
+        {
+            var command = new CreateFilmCommand(request);
+            var commandResult = await _mediator.Send(command);
+            return commandResult is true ? Ok(commandResult) : BadRequest(commandResult);
+        }
     }
 }
