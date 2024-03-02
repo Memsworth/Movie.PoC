@@ -5,6 +5,7 @@ using Movie.PoC.Api;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
+using Movie.PoC.Api.Features.Auth;
 using Movie.PoC.Api.Features.Films;
 using Movie.PoC.Api.Features.Users;
 using Movie.PoC.Api.Settings;
@@ -20,12 +21,15 @@ builder.Services.AddSwaggerGen();
 
 var dbPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "movie.db");
 builder.Services.Configure<OmDbSettings>(builder.Configuration.GetSection(nameof(OmDbSettings)));
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
-builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, FilmDataRaw?>, FilmService.GetFilmDataHandler>(
-    w => w.BaseAddress = new Uri("https://www.omdbapi.com/"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlite($"Data Source={dbPath}"));
+
+builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, FilmDataRaw?>,
+        FilmService.GetFilmDataHandler>
+(w => w.BaseAddress = new Uri("https://www.omdbapi.com/"));
 
 
-builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
+builder.Services.AddScoped<IValidator<CreateUserRequest>, RegisterUserCommandValidator>();
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 var app = builder.Build();
 
