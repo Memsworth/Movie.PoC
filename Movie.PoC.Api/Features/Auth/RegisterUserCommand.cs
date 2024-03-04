@@ -35,7 +35,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         
         if (await IsEmailUnique(request.UserInput.Email))
         {
-            validationResults.Errors.Add(new ValidationFailure(nameof(request.UserInput.Email), "Email already exists"));
+            validationResults.Errors.Add(new ValidationFailure(nameof(request.UserInput.Email),
+                "Email already exists"));
             return Result.Invalid(validationResults.AsErrors());
         }
         
