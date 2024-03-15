@@ -27,10 +27,12 @@ namespace Movie.PoC.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<ActionResult<Result<string>>> Login(string email, string password)
         {
             var request = new LoginRequest { Email = email, Password = password };
-            throw new NotImplementedException();
+            var Query = new LoginQuery(request);
+            var result = await _mediator.Send(Query);
+            return result.ToActionResult();
         }
     }
 }
