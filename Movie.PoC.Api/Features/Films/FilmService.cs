@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿/*using MediatR;
 using Movie.PoC.Api.Entities;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -28,3 +28,4 @@ namespace Movie.PoC.Api.Features.Films
         }
     }
 }
+*/

@@ -2,7 +2,7 @@
 
 namespace Movie.PoC.Api.Contracts;
 
-public interface ITokenGeneratorService
+public interface ITokenService
 {
     string GenerateToken(UserTokenDto userData);
     bool ValidateToken(string token);

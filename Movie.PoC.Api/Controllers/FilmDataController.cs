@@ -1,11 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movie.PoC.Api.Entities;
 using Movie.PoC.Api.Features.Films;
 using Movie.PoC.Api.Features.FilmsData;
+using SimpleResults;
 
 namespace Movie.PoC.Api.Controllers
 {
+    [TranslateResultToActionResult]
     [Route("api/[controller]")]
     [ApiController]
     public class FilmDataController : ControllerBase
@@ -18,15 +21,17 @@ namespace Movie.PoC.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovieData(string request)
+        public async Task<ActionResult<Result>> CreateMovieData(string imdbId)
         {
-            var query = new FilmService.GetFilmDataQuery(request);
+            var query = new GetFilmDataQuery(imdbId);
             var queryResult = await _mediator.Send(query);
             if (queryResult is null) 
-                return NotFound("Movie Data not found");
-            var command = new CreateFilmDataCommand(queryResult);
-            var commandResult = await _mediator.Send(command);
-            return commandResult is true ? Ok(command.filmData) : BadRequest();
+                return NotFound();
+
+            return queryResult.ToActionResult();
+            //var command = new CreateFilmDataCommand(queryResult.Data);
+            //var commandResult = await _mediator.Send(command);
+            //return commandResult.ToActionResult();
         }
     }
 }

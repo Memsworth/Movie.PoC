@@ -12,11 +12,11 @@ namespace Movie.PoC.Api.Features.Auth;
 
 //CREDIT GOES TO TheRealMKB who showed me how how to write jwt webtokens
 
-public class TokenGeneratorService : ITokenGeneratorService
+public class TokenService : ITokenService
 {
     private readonly JwtConfig _jwtConfig;
 
-    public TokenGeneratorService(IOptions<JwtConfig> jwtConfig) => _jwtConfig = jwtConfig.Value;
+    public TokenService(IOptions<JwtConfig> jwtConfig) => _jwtConfig = jwtConfig.Value;
     
     public string GenerateToken(UserTokenDto userData)
     {

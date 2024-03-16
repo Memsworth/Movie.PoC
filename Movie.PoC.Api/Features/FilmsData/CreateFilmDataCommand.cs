@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
+using SimpleResults;
 using System.Globalization;
 
 namespace Movie.PoC.Api.Features.FilmsData
 {
-    public record CreateFilmDataCommand(FilmDataRaw? filmData) : IRequest<bool>;
+    public record CreateFilmDataCommand(FilmDataRaw filmData) : IRequest<Result<Guid>>;
 
-    public class CreateFilmDataCommandHandler : IRequestHandler<CreateFilmDataCommand, bool>
+    public class CreateFilmDataCommandHandler : IRequestHandler<CreateFilmDataCommand, Result<Guid>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -16,17 +17,13 @@ namespace Movie.PoC.Api.Features.FilmsData
             _context = context;
         }
 
-        public async Task<bool> Handle(CreateFilmDataCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateFilmDataCommand request, CancellationToken cancellationToken)
         {
-            if (request.filmData is null)
-                return false;
-            
             var data = CreateFilmData(request.filmData);
             _context.FilmDatas.Add(data);
             await _context.SaveChangesAsync();
-            return true;
+            return Result.CreatedResource().ToResult(data.Id);
         }
-
 
         private FilmDataModel CreateFilmData(FilmDataRaw filmData) 
         {

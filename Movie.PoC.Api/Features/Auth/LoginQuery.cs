@@ -17,10 +17,10 @@ public record LoginQuery(LoginRequest UserLoginRequest) : IRequest<Result<string
 public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
 {
     private IValidator<LoginRequest> _validator;
-    private ITokenGeneratorService _tokenGeneratorService;
+    private ITokenService _tokenGeneratorService;
     private ApplicationDbContext _dbContext;
 
-    public LoginQueryHandler(IValidator<LoginRequest> validator, ITokenGeneratorService tokenGeneratorService,
+    public LoginQueryHandler(IValidator<LoginRequest> validator, ITokenService tokenGeneratorService,
         ApplicationDbContext dbContext)
     {
         _validator = validator;

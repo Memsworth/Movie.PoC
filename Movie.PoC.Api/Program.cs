@@ -1,17 +1,13 @@
 using System.Text;
 using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Movie.PoC.Api;
 using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
-using Movie.PoC.Api.Entities;
 using Movie.PoC.Api.Features.Auth;
-using Movie.PoC.Api.Features.Films;
-using Movie.PoC.Api.Features.Users;
+using Movie.PoC.Api.Features.FilmsData;
 using Movie.PoC.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +20,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var dbPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "movie.db");
+
 builder.Services.Configure<OmDbSettings>(builder.Configuration.GetSection(nameof(OmDbSettings)));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlite($"Data Source={dbPath}"));
 
@@ -53,14 +51,12 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddHttpClient<IRequestHandler<FilmService.GetFilmDataQuery, FilmDataRaw?>,
-        FilmService.GetFilmDataHandler>
-(w => w.BaseAddress = new Uri("https://www.omdbapi.com/"));
-
+builder.Services.AddHttpClient(client => client.BaseAddress = new Uri("https://www.omdbapi.com/"));
 
 builder.Services.AddScoped<IValidator<CreateUserRequest>, RegisterUserCommandValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginQueryValidation>();
-builder.Services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+builder.Services.AddScoped<IValidator<string>, GetFilmDataQueryValidation>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 var app = builder.Build();
