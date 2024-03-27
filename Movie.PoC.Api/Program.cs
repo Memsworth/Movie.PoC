@@ -51,7 +51,10 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddHttpClient(client => client.BaseAddress = new Uri("https://www.omdbapi.com/"));
+builder.Services.AddHttpClient("OmDbApi", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("https://www.omdbapi.com/");
+});
 
 builder.Services.AddScoped<IValidator<CreateUserRequest>, RegisterUserCommandValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginQueryValidation>();

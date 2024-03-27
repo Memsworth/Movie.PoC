@@ -9,6 +9,7 @@ namespace Movie.PoC.Api.Features.FilmsData
         public void Configure(EntityTypeBuilder<FilmDataModel> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.imdbID).IsUnique();
         }
     }
 }
