@@ -21,7 +21,7 @@ This small web application serves as a proof of concept for a modern cinema tick
 
 ## Feedback
 
-If you have any feedback, please reach out to me at abubakarahmed4497@outlook.com
+If you have any feedback, please reach out to me at abubakarmahfooz4479@outlook.com
 
 
 ## License
