@@ -9,10 +9,10 @@ using SimpleResults;
 using BC = BCrypt.Net.BCrypt;
 namespace Movie.PoC.Api.Features.Auth;
 
-public record RegisterUserCommand(CreateUserRequest UserInput) : IRequest<Result>;
+public record RegisterUserCommand(CreateUserRequest UserInput) : IRequest<Result<CreatedGuid>>;
 
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<CreatedGuid>>
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IValidator<CreateUserRequest> _validator;
@@ -24,24 +24,27 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         _validator = validator;
     }
     
-    public async Task<Result> Handle(RegisterUserCommand request, 
+    public async Task<Result<CreatedGuid>> Handle(RegisterUserCommand request, 
         CancellationToken cancellationToken)
     {
-        var validationResults = await _validator.ValidateAsync(request.UserInput, cancellationToken);
-        if (validationResults.IsFailed())
+        var inputValidationResult = await _validator.ValidateAsync(request.UserInput, cancellationToken);
+        if (inputValidationResult.IsFailed())
         {
-            return Result.Invalid(validationResults.AsErrors());
+            return Result.Invalid(inputValidationResult.AsErrors());
         }
-        
+
+        var businessValidationResult = new ValidationResult();
+
         if (await IsEmailUnique(request.UserInput.Email))
         {
-            validationResults.Errors.Add(new ValidationFailure(nameof(request.UserInput.Email),
+            businessValidationResult.Errors.Add(new ValidationFailure("Email",
                 "Email already exists"));
-            return Result.Invalid(validationResults.AsErrors());
+            return Result.Invalid(businessValidationResult.AsErrors());
         }
         
         var user = new UserModel
         {
+            Id = Guid.NewGuid(),
             Name = request.UserInput.Name,
             Email = request.UserInput.Email,
             Password = BC.HashPassword(request.UserInput.Password),
@@ -51,7 +54,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return Result.CreatedResource();
+        return Result.CreatedResource(user.Id);
     }
     private async Task<bool> IsEmailUnique(string email) => await _dbContext.Users.AnyAsync(x => x.Email == email);
 } 
