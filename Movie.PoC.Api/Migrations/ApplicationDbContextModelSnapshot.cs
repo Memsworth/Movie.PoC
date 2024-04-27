@@ -15,7 +15,7 @@ namespace Movie.PoC.Api.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
             modelBuilder.Entity("Movie.PoC.Api.Entities.FilmDataModel", b =>
                 {
@@ -89,6 +89,9 @@ namespace Movie.PoC.Api.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("imdbID")
+                        .IsUnique();
 
                     b.ToTable("FilmDatas");
                 });

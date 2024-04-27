@@ -7,7 +7,7 @@ using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.DTOs;
 using Movie.PoC.Api.Settings;
 
-namespace Movie.PoC.Api.Features.Auth;
+namespace Movie.PoC.Api.Features;
 
 
 //CREDIT GOES TO TheRealMKB who showed me how how to write jwt webtokens
@@ -17,7 +17,7 @@ public class TokenService : ITokenService
     private readonly JwtConfig _jwtConfig;
 
     public TokenService(IOptions<JwtConfig> jwtConfig) => _jwtConfig = jwtConfig.Value;
-    
+
     public string GenerateToken(UserTokenDto userData)
     {
         var claims = new[]
@@ -27,14 +27,14 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.NameIdentifier, userData.Id),
             new Claim(ClaimTypes.Role, userData.Role)
         };
-        
+
         //fix this bug later
         var expiryMins = _jwtConfig.ExpiryMins;
 
         return BuildToken(claims, 10);
     }
 
-    private string BuildToken(IEnumerable<Claim> claims, int expiryMins) 
+    private string BuildToken(IEnumerable<Claim> claims, int expiryMins)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtConfig.Key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -50,7 +50,7 @@ public class TokenService : ITokenService
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }
-    
+
     public bool ValidateToken(string token)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtConfig.Key));
@@ -76,5 +76,5 @@ public class TokenService : ITokenService
         return false;
     }
 
-    
+
 }

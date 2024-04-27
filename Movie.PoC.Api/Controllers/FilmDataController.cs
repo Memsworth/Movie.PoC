@@ -21,14 +21,15 @@ namespace Movie.PoC.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Result<Guid>>> CreateMovieData(string imdbId)
+        public async Task<ActionResult<Result<CreatedGuid>>> CreateMovieData(string imdbId)
         {
             var query = new GetFilmDataQuery(imdbId);
             var queryResult = await _mediator.Send(query);
+            
             if (queryResult is null) 
                 return NotFound();
 
-            var command = new CreateFilmDataCommand(queryResult.Data);
+            var command = new CreateFilmDataCommand(queryResult);
             var commandResult = await _mediator.Send(command);
             return commandResult.ToActionResult();
         }

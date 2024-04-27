@@ -16,9 +16,9 @@ public record LoginQuery(LoginRequest UserLoginRequest) : IRequest<Result<string
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
 {
-    private IValidator<LoginRequest> _validator;
-    private ITokenService _tokenGeneratorService;
-    private ApplicationDbContext _dbContext;
+    private readonly IValidator<LoginRequest> _validator;
+    private readonly ITokenService _tokenGeneratorService;
+    private readonly ApplicationDbContext _dbContext;
 
     public LoginQueryHandler(IValidator<LoginRequest> validator, ITokenService tokenGeneratorService,
         ApplicationDbContext dbContext)
@@ -43,20 +43,14 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
         (x => x.Email == request.UserLoginRequest.Email,
             cancellationToken);
         
-        if (user is null)
+        // check if login detail is correct. 
+        if (user is null || !BC.Verify(request.UserLoginRequest.Password, user.Password))
         {
             validationResults.Errors.Add(new ValidationFailure
-                (nameof(LoginQuery.UserLoginRequest.Email), "user doesn't exist"));
+                ("Email", "Invalid Login Details"));
             return Result.NotFound(validationResults.AsErrors());
         }
-
-        // check if login detail is correct
-        if (!BC.Verify(request.UserLoginRequest.Password, user.Password))
-        {
-            validationResults.Errors.Add(new ValidationFailure(
-                nameof(LoginQuery.UserLoginRequest.Password), "invalid password"));
-            return Result.Invalid(validationResults.AsErrors());
-        }
+        
 
         //Get an IMAPPER interface and map 
         var userDataToken = new UserTokenDto()

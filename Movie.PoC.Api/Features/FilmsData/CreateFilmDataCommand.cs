@@ -6,9 +6,9 @@ using System.Globalization;
 
 namespace Movie.PoC.Api.Features.FilmsData
 {
-    public record CreateFilmDataCommand(FilmDataRaw filmData) : IRequest<Result<Guid>>;
+    public record CreateFilmDataCommand(FilmDataRaw filmData) : IRequest<Result<CreatedGuid>>;
 
-    public class CreateFilmDataCommandHandler : IRequestHandler<CreateFilmDataCommand, Result<Guid>>
+    public class CreateFilmDataCommandHandler : IRequestHandler<CreateFilmDataCommand, Result<CreatedGuid>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,18 +17,19 @@ namespace Movie.PoC.Api.Features.FilmsData
             _context = context;
         }
 
-        public async Task<Result<Guid>> Handle(CreateFilmDataCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CreatedGuid>> Handle(CreateFilmDataCommand request, CancellationToken cancellationToken)
         {
             var data = CreateFilmData(request.filmData);
-            _context.FilmDatas.Add(data);
-            await _context.SaveChangesAsync();
-            return Result.CreatedResource().ToResult(data.Id);
+            await _context.FilmDatas.AddAsync(data);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.CreatedResource(data.Id);
         }
 
         private FilmDataModel CreateFilmData(FilmDataRaw filmData) 
         {
             return new FilmDataModel
             {
+                Id = Guid.NewGuid(),
                 Title = filmData.Title,
                 Rated = Helper.ParseEnum<ContentRating>(filmData.Rated),
                 Released = DateOnly.FromDateTime(DateTime.Parse(filmData.Released)),

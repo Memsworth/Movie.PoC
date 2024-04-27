@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
+using Movie.PoC.Api.Features;
 using Movie.PoC.Api.Features.Auth;
 using Movie.PoC.Api.Features.FilmsData;
 using Movie.PoC.Api.Settings;

@@ -19,7 +19,7 @@ namespace Movie.PoC.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<Result>> Register(CreateUserRequest request)
+        public async Task<ActionResult<Result<CreatedGuid>>> Register(CreateUserRequest request)
         {
             var command = new RegisterUserCommand(request);
             var result = await _mediator.Send(command);
@@ -30,8 +30,8 @@ namespace Movie.PoC.Api.Controllers
         public async Task<ActionResult<Result<string>>> Login(string email, string password)
         {
             var request = new LoginRequest { Email = email, Password = password };
-            var Query = new LoginQuery(request);
-            var result = await _mediator.Send(Query);
+            var query = new LoginQuery(request);
+            var result = await _mediator.Send(query);
             return result.ToActionResult();
         }
     }

@@ -9,13 +9,13 @@ using System.Text.Json;
 
 namespace Movie.PoC.Api.Features.FilmsData
 {
-    public record GetFilmDataQuery(string ImdbId) : IRequest<Result<FilmDataRaw>?>;
+    public record GetFilmDataQuery(string ImdbId) : IRequest<FilmDataRaw?>;
 
-    public class GetFilmDataQueryHandler : IRequestHandler<GetFilmDataQuery, Result<FilmDataRaw>?>
+    public class GetFilmDataQueryHandler : IRequestHandler<GetFilmDataQuery, FilmDataRaw?>
     {
-        private IValidator<string> _validator;
-        private IOptions<OmDbSettings> _settings;
-        private IHttpClientFactory _httpClientFactory;
+        private readonly IValidator<string> _validator;
+        private readonly IOptions<OmDbSettings> _settings;
+        private readonly IHttpClientFactory _httpClientFactory;
         public GetFilmDataQueryHandler(IValidator<string> validator, IOptions<OmDbSettings> settings, IHttpClientFactory httpClientFactory)
         {
             _validator = validator;
@@ -23,14 +23,14 @@ namespace Movie.PoC.Api.Features.FilmsData
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<Result<FilmDataRaw>?> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
+        public async Task<FilmDataRaw?> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
         {
             var httpClient = _httpClientFactory.CreateClient("OmDbApi");
             var validationResults = await _validator.ValidateAsync(request.ImdbId, cancellationToken);
             
             if(validationResults.IsFailed())
             {
-                return Result.Invalid(validationResults.AsErrors());
+                return null;
             }
 
             string url = $"?i={request.ImdbId}&apikey={_settings.Value.ApiKey}".ToString();
@@ -39,9 +39,7 @@ namespace Movie.PoC.Api.Features.FilmsData
             
             if (!response.IsSuccessStatusCode)
             {
-                validationResults.Errors.Add(new ValidationFailure
-                ("BaseUri", "could not connect to external api"));
-                return Result.Failure(validationResults.AsErrors());
+                return null;
             }
 
             var jsonFile = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -50,7 +48,7 @@ namespace Movie.PoC.Api.Features.FilmsData
             if (jsonContent is null || jsonContent.Response is "False")
                 return null;
             
-            return Result.Success().ToResult(jsonContent);
+            return jsonContent;
 
         }
     }
