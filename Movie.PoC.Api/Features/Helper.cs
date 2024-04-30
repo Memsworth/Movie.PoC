@@ -1,5 +1,9 @@
 ﻿using Movie.PoC.Api.Entities;
 using System;
+using FluentValidation;
+using FluentValidation.Results;
+using LanguageExt.ClassInstances;
+using LanguageExt.Common;
 
 namespace Movie.PoC.Api.Features
 {

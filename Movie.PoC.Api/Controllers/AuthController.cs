@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Features.Auth;
-using SimpleResults;
+
 
 namespace Movie.PoC.Api.Controllers
 {
-    [TranslateResultToActionResult]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -18,21 +17,24 @@ namespace Movie.PoC.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<Result<CreatedGuid>>> Register(CreateUserRequest request)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(UserRegisterRequest requestData)
         {
-            var command = new RegisterUserCommand(request);
+            var command = new RegisterUserCommand(requestData);
             var result = await _mediator.Send(command);
-            return result.ToActionResult();
+            return result.Match<IActionResult>(
+                id => CreatedAtAction(nameof(Register), new { id }),
+                err => BadRequest(err.ToString())
+            );
         }
 
-        [HttpPost("login")]
+        /*[HttpPost("login")]
         public async Task<ActionResult<Result<string>>> Login(string email, string password)
         {
             var request = new LoginRequest { Email = email, Password = password };
             var query = new LoginQuery(request);
             var result = await _mediator.Send(query);
             return result.ToActionResult();
-        }
+        }*/
     }
 }

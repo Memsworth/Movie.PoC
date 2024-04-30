@@ -1,60 +1,39 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
+using LanguageExt.Common;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
-using Movie.PoC.Api.Entities;
-using SimpleResults;
-using BC = BCrypt.Net.BCrypt;
 namespace Movie.PoC.Api.Features.Auth;
 
-public record RegisterUserCommand(CreateUserRequest UserInput) : IRequest<Result<CreatedGuid>>;
+public record RegisterUserCommand(UserRegisterRequest RequestData) : IRequest<Result<Guid>>;
 
-
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<CreatedGuid>>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<Guid>>
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly IValidator<CreateUserRequest> _validator;
+    private readonly IValidator<UserRegisterRequest> _validator;
 
     public RegisterUserCommandHandler(ApplicationDbContext dbContext, 
-        IValidator<CreateUserRequest> validator)
+        IValidator<UserRegisterRequest> validator)
     {
         _dbContext = dbContext;
         _validator = validator;
     }
     
-    public async Task<Result<CreatedGuid>> Handle(RegisterUserCommand request, 
+    public async Task<Result<Guid>> Handle(RegisterUserCommand request, 
         CancellationToken cancellationToken)
     {
-        var inputValidationResult = await _validator.ValidateAsync(request.UserInput, cancellationToken);
-        if (inputValidationResult.IsFailed())
+        var validationResult = await _validator.ValidateAsync(request.RequestData, cancellationToken);
+        if (!validationResult.IsValid)
         {
-            return Result.Invalid(inputValidationResult.AsErrors());
-        }
-
-        var businessValidationResult = new ValidationResult();
-
-        if (await IsEmailUnique(request.UserInput.Email))
-        {
-            businessValidationResult.Errors.Add(new ValidationFailure("Email",
-                "Email already exists"));
-            return Result.Invalid(businessValidationResult.AsErrors());
+            var error = new ValidationException(validationResult.Errors);
+            return new Result<Guid>(error);
         }
         
-        var user = new UserModel
-        {
-            Id = Guid.NewGuid(),
-            Name = request.UserInput.Name,
-            Email = request.UserInput.Email,
-            Password = BC.HashPassword(request.UserInput.Password),
-            BirthDay = request.UserInput.BirthDay,
-            Role = Role.User
-        };
-        
-        _dbContext.Users.Add(user);
+        var newUser = request.RequestData.MapToUserModel();
+        _dbContext.Users.Add(newUser);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return Result.CreatedResource(user.Id);
+        return newUser.Id;
     }
-    private async Task<bool> IsEmailUnique(string email) => await _dbContext.Users.AnyAsync(x => x.Email == email);
+
 } 

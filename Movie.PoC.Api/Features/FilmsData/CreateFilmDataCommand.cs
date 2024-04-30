@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
-using SimpleResults;
 using System.Globalization;
 
-namespace Movie.PoC.Api.Features.FilmsData
+/*namespace Movie.PoC.Api.Features.FilmsData
 {
     public record CreateFilmDataCommand(FilmDataRaw filmData) : IRequest<Result<CreatedGuid>>;
 
@@ -52,4 +51,4 @@ namespace Movie.PoC.Api.Features.FilmsData
         }
     }
 
-}
+}*/

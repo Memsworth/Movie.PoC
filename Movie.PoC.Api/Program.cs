@@ -57,8 +57,7 @@ builder.Services.AddHttpClient("OmDbApi", httpClient =>
     httpClient.BaseAddress = new Uri("https://www.omdbapi.com/");
 });
 
-builder.Services.AddScoped<IValidator<CreateUserRequest>, RegisterUserCommandValidator>();
-builder.Services.AddScoped<IValidator<LoginRequest>, LoginQueryValidation>();
+builder.Services.AddScoped<IValidator<UserRegisterRequest>, RegisterUserCommandBusinessValidator>();
 builder.Services.AddScoped<IValidator<string>, GetFilmDataQueryValidation>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 

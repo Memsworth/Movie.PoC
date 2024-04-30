@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿/*using FluentValidation;
 using MediatR;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
@@ -44,4 +44,4 @@ namespace Movie.PoC.Api.Features.Films
             RuleFor(request => request.CreateFilmRequest.IsDisabled).NotEmpty().WithMessage("Enable or Disable the film");
         }
     }
-}
+}*/

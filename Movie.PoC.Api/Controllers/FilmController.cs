@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿/*using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Features.Films;
@@ -24,4 +24,4 @@ namespace Movie.PoC.Api.Controllers
             return commandResult is true ? Ok(commandResult) : BadRequest(commandResult);
         }
     }
-}
+}*/
