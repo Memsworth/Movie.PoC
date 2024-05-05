@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Movie.PoC.Api.Contracts.Requests;
-using Movie.PoC.Api.Features.Auth;
 
-
-namespace Movie.PoC.Api.Controllers
+namespace Movie.PoC.Api.Features.Auth
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,13 +26,15 @@ namespace Movie.PoC.Api.Controllers
             );
         }
 
-        /*[HttpPost("login")]
-        public async Task<ActionResult<Result<string>>> Login(string email, string password)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginRequest requestData)
         {
-            var request = new LoginRequest { Email = email, Password = password };
-            var query = new LoginQuery(request);
+            var query = new LoginQuery(requestData);
             var result = await _mediator.Send(query);
-            return result.ToActionResult();
-        }*/
+            return result.Match<IActionResult>(
+                token => Ok(token.ToString()),
+                err => BadRequest(err.ToString())
+                );
+        }
     }
 }

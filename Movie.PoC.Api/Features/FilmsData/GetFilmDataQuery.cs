@@ -1,18 +1,19 @@
-﻿using FluentValidation;
+﻿/*using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Movie.PoC.Api.Entities;
 using Movie.PoC.Api.Settings;
 using System.Text.Json;
+using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using Movie.PoC.Api.Database;
 
-/*namespace Movie.PoC.Api.Features.FilmsData
+namespace Movie.PoC.Api.Features.FilmsData
 {
-    public record GetFilmDataQuery(string ImdbId) : IRequest<Result<FilmDataRaw>>;
+    public record GetFilmDataQuery(string ImdbId) : IRequest<Result<FilmDataRaw?>>;
 
-    public class GetFilmDataQueryHandler : IRequestHandler<GetFilmDataQuery, Result<FilmDataRaw>>
+    public class GetFilmDataQueryHandler : IRequestHandler<GetFilmDataQuery, Result<FilmDataRaw?>>
     {
         private readonly IValidator<string> _validator;
         private readonly IOptions<OmDbSettings> _settings;
@@ -27,14 +28,8 @@ using Movie.PoC.Api.Database;
             _dbContext = dbContext;
         }
 
-        public async Task<Result<FilmDataRaw>> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
+        public async Task<Result<FilmDataRaw?>> Handle(GetFilmDataQuery request, CancellationToken cancellationToken)
         {
-            var error = new ValidationEx
-            var validationResults = await _validator.ValidateAsync(request.ImdbId, cancellationToken);
-            if(validationResults.IsFailed())
-            {
-                return Result.Invalid(validationResults.AsErrors());
-            }
             //fix an issue. Should I check if an item exist before we enter? separation of concerns is a factor here
             //for now check if the item exist here first before creating
             //later change or find a better way

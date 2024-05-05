@@ -4,13 +4,14 @@ using LanguageExt.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Movie.PoC.Api.Contracts;
+using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using BC = BCrypt.Net.BCrypt;
 
 
 namespace Movie.PoC.Api.Features.Auth;
 
-public record LoginQuery(LoginRequest UserLoginRequest) : IRequest<Result<string>>;
+public record LoginQuery(LoginRequest LoginData) : IRequest<Result<string>>;
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
 {
@@ -28,39 +29,31 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
     
     public async Task<Result<string>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var inputValidation = await _validator.ValidateAsync(request.UserLoginRequest,
-            cancellationToken);
-        
-        if (!inputValidation.IsValid)
-        {
-            return Helper.GetValidation<string>(inputValidation);
-        }
-
         var businessValidation = new ValidationResult();
         
         //Check if user is there
         var user = await _dbContext.Users.FirstOrDefaultAsync
-        (x => x.Email == request.UserLoginRequest.Email,
+        (x => x.Email == request.LoginData.Email,
             cancellationToken);
         
         // check if user is there
         if (user is null)
         {
-            businessValidation.Errors.Add(new ValidationFailure("User", "User not found"));
+            businessValidation.Errors.Add(new ValidationFailure("User", "User doesn't exist"));
         }
-        if (!BC.Verify(request.UserLoginRequest.Password, user.Password))
+        if (!BC.Verify(request.LoginData.Password, user.Password))
         {
             businessValidation.Errors.Add(new ValidationFailure("Email", "Invalid Login Details"));
         }
 
         if (!businessValidation.IsValid)
         {
-            return Helper.GetValidation<string>(businessValidation);
+            var error = new ValidationException(businessValidation.Errors);
+            return new Result<string>(error);
         }
 
-        //Get an IMAPPER interface and map 
+        //Mapping userData to a token claim
         var userTokenData = user.MapToUserToken();
-
         var userToken = _tokenGeneratorService.GenerateToken(userTokenData);
         return userToken;
     }

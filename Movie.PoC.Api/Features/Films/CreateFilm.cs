@@ -1,16 +1,16 @@
 ﻿/*using FluentValidation;
+using LanguageExt.Common;
 using MediatR;
-using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
 
 namespace Movie.PoC.Api.Features.Films
 {
-    public record CreateFilmCommand(CreateFilmRequest CreateFilmRequest) : IRequest<bool>
+    public record CreateFilmCommand(CreateFilmRequest CreateFilmRequest) : IRequest<Result<Guid>>
     {
     }
 
-    public class CreateFilmCommandHandler : IRequestHandler<CreateFilmCommand, bool>
+    public class CreateFilmCommandHandler : IRequestHandler<CreateFilmCommand, Result<Guid>>
     {
         private readonly ApplicationDbContext _context;
         public CreateFilmCommandHandler(ApplicationDbContext context)

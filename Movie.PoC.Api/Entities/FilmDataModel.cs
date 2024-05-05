@@ -20,8 +20,6 @@
         public int imdbVotes { get; set; }
         public string imdbID { get; set; }
         public MediaType Type { get; set; }
-        public string? Production { get; set; }
-        public string? Website { get; set; }
         public FilmModel AssociatedFilm { get; set; }
     }
 
