@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Movie.PoC.Api.Database;
+﻿/*using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Entities;
 using LanguageExt.Common;
 using Movie.PoC.Api.Contracts;
@@ -25,4 +24,4 @@ namespace Movie.PoC.Api.Features.FilmsData
             return data.Id;
         }
     }
-}
+}*/

@@ -20,6 +20,7 @@ public static class Mapper
             LastName = request.LastName,
             Email = request.Email,
             Password = BC.HashPassword(request.Password),
+            LastModifiedDate = DateTime.Now,
             BirthDay = request.Birthday,
             Role = Role.User
         };

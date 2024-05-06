@@ -1,7 +1,6 @@
-﻿using FluentValidation;
+﻿/*using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
@@ -57,4 +56,4 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<string>>
         var userToken = _tokenGeneratorService.GenerateToken(userTokenData);
         return userToken;
     }
-}
+}*/

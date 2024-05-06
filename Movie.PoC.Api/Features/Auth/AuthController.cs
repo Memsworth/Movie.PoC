@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
 
 namespace Movie.PoC.Api.Features.Auth
@@ -8,25 +8,23 @@ namespace Movie.PoC.Api.Features.Auth
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public AuthController(IMediator mediator)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            _mediator = mediator;
+            _authService = authService;
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(UserRegisterRequest requestData)
         {
-            var command = new RegisterUserCommand(requestData);
-            var result = await _mediator.Send(command);
-            return result.Match<IActionResult>(
+            var serviceResponse = await _authService.RegisterUser(requestData);
+            return serviceResponse.Match<IActionResult>(
                 id => CreatedAtAction(nameof(Register), new { id }),
                 err => BadRequest(err.ToString())
             );
         }
 
-        [HttpPost("Login")]
+        /*[HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest requestData)
         {
             var query = new LoginQuery(requestData);
@@ -35,6 +33,6 @@ namespace Movie.PoC.Api.Features.Auth
                 token => Ok(token.ToString()),
                 err => BadRequest(err.ToString())
                 );
-        }
+        }*/
     }
 }
