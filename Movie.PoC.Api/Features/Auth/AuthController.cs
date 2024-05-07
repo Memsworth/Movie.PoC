@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LanguageExt;
+using Microsoft.AspNetCore.Mvc;
 using Movie.PoC.Api.Contracts;
 using Movie.PoC.Api.Contracts.Requests;
 
@@ -24,15 +25,14 @@ namespace Movie.PoC.Api.Features.Auth
             );
         }
 
-        /*[HttpPost("Login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest requestData)
         {
-            var query = new LoginQuery(requestData);
-            var result = await _mediator.Send(query);
-            return result.Match<IActionResult>(
-                token => Ok(token.ToString()),
+            var query = await _authService.LoginUser(requestData);
+            return query.Match<IActionResult>(
+                token => token is null ? NotFound() : Ok(new { token }),
                 err => BadRequest(err.ToString())
                 );
-        }*/
+        }
     }
 }

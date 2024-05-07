@@ -3,14 +3,12 @@ using Movie.PoC.Api.Contracts.Requests;
 
 namespace Movie.PoC.Api.Features.Auth;
 
-public class LoginQueryValidation : AbstractValidator<LoginRequest>
+public class LoginValidation : AbstractValidator<LoginRequest>
 {
-    public LoginQueryValidation()
+    public LoginValidation()
     {
         RuleFor(userInput => userInput.Email)
-            .EmailAddress().WithMessage("Enter a valid email")
-            .NotEmpty().WithMessage("Email can't be empty");
-
+            .EmailAddress().WithMessage("Enter a valid email");
         RuleFor(userInput => userInput.Password)
             .NotEmpty().WithMessage("Password can't be empty");
     }

@@ -58,6 +58,7 @@ builder.Services.AddHttpClient("OmDbApi", httpClient =>
 });
 
 builder.Services.AddScoped<IValidator<UserRegisterRequest>, RegisterUserValidator>();
+builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidation>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IValidator<string>, GetFilmDataQueryValidation>();
 builder.Services.AddScoped<ITokenService, TokenService>();
