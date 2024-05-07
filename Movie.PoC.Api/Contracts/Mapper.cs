@@ -1,5 +1,4 @@
 using System.Globalization;
-using FluentValidation;
 using Movie.PoC.Api.Contracts.DTOs;
 using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Entities;
@@ -59,16 +58,5 @@ public static class Mapper
             imdbVotes = int.Parse(filmData.imdbVotes, NumberStyles.AllowThousands),
             Type = Helper.ParseEnum<MediaType>(filmData.Type),
         };
-    }
-
-    public static Dictionary<string, string[]> MapToResponse(this ValidationException exceptions)
-    {
-        var errorObject = new Dictionary<string, string[]>();
-        foreach (var exception in exceptions.Errors)
-        {
-            errorObject.Add(exception.PropertyName, new string[] { exception.ErrorMessage });
-        }
-
-        return errorObject;
     }
 }
