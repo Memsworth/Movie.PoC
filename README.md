@@ -1,6 +1,6 @@
-# Movie and Cinema Ticketing Booth Proof of Concept
+# Movie Review & History Proof of Concept
 
-This small web application serves as a proof of concept for a modern cinema ticketing booth, providing users with a seamless experience for reserving movie tickets, writing reviews, and managing their watch history for movies they've watched at the cinema.
+This small web application serves as a proof of concept for a modern way for writing reviews, and managing their watch history for movies they've watched at the cinema.
 
 
 
@@ -12,8 +12,6 @@ This small web application serves as a proof of concept for a modern cinema tick
 
 
 ## Features
-
-- **Movie Reservation**: Users can browse available movies, select showtimes, and reserve their tickets directly through the app.
 
 - **Review System**: Share your thoughts on the movies you've watched by writing and posting reviews for others to read and enjoy.
 
@@ -27,4 +25,3 @@ If you have any feedback, please reach out to me at abubakarmahfooz4479@outlook.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
