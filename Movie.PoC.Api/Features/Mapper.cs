@@ -1,18 +1,17 @@
 using System.Globalization;
-using Movie.PoC.Api.Contracts.DTOs;
-using Movie.PoC.Api.Contracts.Requests;
-using Movie.PoC.Api.Entities;
-using Movie.PoC.Api.Features;
+using Movie.PoC.Api.DTOs;
+using Movie.PoC.Api.Models.Entities;
+using Movie.PoC.Api.Requests;
 using BC = BCrypt.Net.BCrypt;
 
 
-namespace Movie.PoC.Api.Contracts;
+namespace Movie.PoC.Api.Features;
 
 public static class Mapper
 {
-    public static UserModel MapToUserModel(this UserRegisterRequest request)
+    public static User MapToUserModel(this UserRegisterRequest request)
     {
-        return new UserModel
+        return new User
         {
             Id = Guid.NewGuid(),
             FirstName = request.FirstName,
@@ -25,7 +24,7 @@ public static class Mapper
         };
     }
 
-    public static UserTokenDto MapToUserToken(this UserModel userModel)
+    public static UserTokenDto MapToUserToken(this User userModel)
     {
         return new UserTokenDto
         {
@@ -36,9 +35,9 @@ public static class Mapper
         };
     }
 
-    public static FilmDataModel MapToFilmData(this FilmDataRaw filmData)
+    public static FilmData MapToFilmData(this FilmDataRaw filmData)
     {
-        return new FilmDataModel
+        return new FilmData
         {
             Id = Guid.NewGuid(),
             Title = filmData.Title,

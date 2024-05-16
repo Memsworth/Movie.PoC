@@ -1,4 +1,4 @@
-namespace Movie.PoC.Api.Contracts.Requests;
+namespace Movie.PoC.Api.Requests;
 
 public class LoginRequest
 {

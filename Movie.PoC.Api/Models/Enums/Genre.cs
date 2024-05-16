@@ -1,0 +1,29 @@
+﻿namespace Movie.PoC.Api.Models.Enums
+{
+    public enum Genre
+    {
+        Other,
+        Action,
+        Adventure,
+        Animation,
+        Biography,
+        Comedy,
+        Crime,
+        Documentary,
+        Drama,
+        Family,
+        Fantasy,
+        FilmNoir,
+        History,
+        Horror,
+        Music,
+        Musical,
+        Mystery,
+        Romance,
+        SciFi,
+        Sport,
+        Thriller,
+        War,
+        Western,
+    }
+}

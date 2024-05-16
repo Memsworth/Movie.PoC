@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Movie.PoC.Api.Contracts;
-using Movie.PoC.Api.Contracts.DTOs;
+using Movie.PoC.Api.DTOs;
+using Movie.PoC.Api.Models.Contracts;
 using Movie.PoC.Api.Settings;
 
 namespace Movie.PoC.Api.Features;

@@ -1,6 +1,6 @@
-﻿using Movie.PoC.Api.Contracts.DTOs;
+﻿using Movie.PoC.Api.DTOs;
 
-namespace Movie.PoC.Api.Contracts;
+namespace Movie.PoC.Api.Models.Contracts;
 
 public interface ITokenService
 {

@@ -1,4 +1,4 @@
-﻿namespace Movie.PoC.Api.Entities
+﻿namespace Movie.PoC.Api.Models.Entities
 {
     public class FilmDataRaw
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Movie.PoC.Api.Entities;
 using Movie.PoC.Api.Features.Films;
 using Movie.PoC.Api.Features.FilmsData;
 using Movie.PoC.Api.Features.Reviews;
 using Movie.PoC.Api.Features.Users;
+using Movie.PoC.Api.Models.Entities;
 
 namespace Movie.PoC.Api.Database
 {
@@ -13,9 +13,9 @@ namespace Movie.PoC.Api.Database
         {
         }
 
-        public DbSet<UserModel> Users { get; set; }
-        public DbSet<FilmModel> Films { get; set; }
-        public DbSet<FilmDataModel> FilmDatas { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Film> Films { get; set; }
+        public DbSet<FilmData> FilmDatas { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserModelConfiguration());

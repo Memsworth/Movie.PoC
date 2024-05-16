@@ -1,7 +1,7 @@
 using LanguageExt.Common;
-using Movie.PoC.Api.Contracts.Requests;
+using Movie.PoC.Api.Requests;
 
-namespace Movie.PoC.Api.Contracts;
+namespace Movie.PoC.Api.Models.Contracts;
 
 public interface IAuthService
 {

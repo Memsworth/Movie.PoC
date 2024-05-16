@@ -1,7 +1,7 @@
 ﻿using LanguageExt;
 using Microsoft.AspNetCore.Mvc;
-using Movie.PoC.Api.Contracts;
-using Movie.PoC.Api.Contracts.Requests;
+using Movie.PoC.Api.Models.Contracts;
+using Movie.PoC.Api.Requests;
 
 namespace Movie.PoC.Api.Features.Auth
 {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Movie.PoC.Api.Entities;
+using Movie.PoC.Api.Models.Entities;
 
 namespace Movie.PoC.Api.Features.Users
 {
-    public class UserModelConfiguration : IEntityTypeConfiguration<UserModel>
+    public class UserModelConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<UserModel> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Email).IsUnique();

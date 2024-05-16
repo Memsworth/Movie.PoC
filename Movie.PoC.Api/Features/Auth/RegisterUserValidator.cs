@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
+using Movie.PoC.Api.Requests;
 
 namespace Movie.PoC.Api.Features.Auth;
 

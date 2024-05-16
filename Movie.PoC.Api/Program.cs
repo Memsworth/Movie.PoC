@@ -3,12 +3,12 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Movie.PoC.Api.Contracts;
-using Movie.PoC.Api.Contracts.Requests;
 using Movie.PoC.Api.Database;
 using Movie.PoC.Api.Features;
 using Movie.PoC.Api.Features.Auth;
 using Movie.PoC.Api.Features.FilmsData;
+using Movie.PoC.Api.Models.Contracts;
+using Movie.PoC.Api.Requests;
 using Movie.PoC.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,7 +69,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c=> c.SwaggerEndpoint);
 }
 
 app.UseHttpsRedirection();

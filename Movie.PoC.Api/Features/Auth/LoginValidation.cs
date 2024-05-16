@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Movie.PoC.Api.Contracts.Requests;
+using Movie.PoC.Api.Requests;
 
 namespace Movie.PoC.Api.Features.Auth;
 

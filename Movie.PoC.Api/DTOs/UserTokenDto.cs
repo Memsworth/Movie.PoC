@@ -1,4 +1,4 @@
-﻿namespace Movie.PoC.Api.Contracts.DTOs;
+﻿namespace Movie.PoC.Api.DTOs;
 
 public class UserTokenDto
 {
